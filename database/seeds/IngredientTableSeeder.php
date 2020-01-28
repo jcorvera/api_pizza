@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Models\Pizza\Ingredient;
 use Illuminate\Support\Facades\DB;
 
 class IngredientTableSeeder extends Seeder

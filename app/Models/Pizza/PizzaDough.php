@@ -22,5 +22,5 @@ class PizzaDough extends Model
     {
         return $this->belongsTo(Dough::class,'dough_id');
     }
-    
+
 }

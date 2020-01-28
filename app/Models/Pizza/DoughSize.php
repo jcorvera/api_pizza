@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class DoughSize extends Model
 {
     protected $table = 'dough_sizes';
-    
+
     protected $fillable = [
         'dough_id',
         'size_pizza_id',

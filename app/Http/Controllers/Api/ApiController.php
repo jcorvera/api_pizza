@@ -13,8 +13,7 @@ use Illuminate\Support\Facades\DB;
 use App\User;
 
 class ApiController extends Controller
-{   
-
+{
     public function login(LoginRequest $request)
     {
         $credentials = $request->only('email', 'password');

@@ -19,5 +19,5 @@ class BranchOffice extends Model
     {
         return $this->hasMany(Order::class,'branch_office_id','id');
     }
-    
+
 }

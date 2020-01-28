@@ -13,12 +13,12 @@ class Pizza extends Model
 
     public function pizzaIngredients()
     {
-        return $this->hasMany(PizzaIngredient::class,'pizza_id','id'); 
+        return $this->hasMany(PizzaIngredient::class,'pizza_id','id');
     }
 
     public function pizzaDough()
     {
-        return $this->hasMany(PizzaDough::class,'pizza_id','id'); 
+        return $this->hasMany(PizzaDough::class,'pizza_id','id');
     }
 
     public function orderDetails()

@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Order\BranchOffice;
 use Illuminate\Database\Seeder;
 
 class BranchOfficeTableSeeder extends Seeder
@@ -11,6 +12,6 @@ class BranchOfficeTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(BranchOfficeTableSeeder::class, 100)->create();
+        factory(BranchOffice::class, 4)->create();
     }
 }

@@ -7,11 +7,11 @@ class PizzaTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     *
-     * @return void
+        *
+        * @return void
      */
     public function run()
     {
-        factory(Pizza::class, 100)->create();
+        factory(Pizza::class, 10)->create();
     }
 }
