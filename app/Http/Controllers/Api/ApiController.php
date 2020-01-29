@@ -7,6 +7,7 @@ use JWTAuth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\login\StoreUserRequest;
+use App\Http\Requests\User\LoginRequest;
 use App\Http\Resources\ProfileResource;
 use Illuminate\Support\Facades\DB;
 use App\User;
