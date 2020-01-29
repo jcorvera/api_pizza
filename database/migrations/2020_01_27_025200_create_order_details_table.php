@@ -14,6 +14,7 @@ class CreateOrderDetailsTable extends Migration
     public function up()
     {
         Schema::create('order_details', function (Blueprint $table) {
+            
             $table->bigIncrements('id');
             $table->unsignedBigInteger('order_id');
             $table->unsignedBigInteger('pizza_id');
@@ -31,7 +32,7 @@ class CreateOrderDetailsTable extends Migration
             ->onUpdate('cascade');
 
             $table->foreign('dough_size_id')
-            ->references('id')->on('pizzas')
+            ->references('id')->on('dough_sizes')
             ->onDelete('restrict')
             ->onUpdate('cascade');
         });

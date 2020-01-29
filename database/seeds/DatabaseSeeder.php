@@ -24,6 +24,9 @@ class DatabaseSeeder extends Seeder
             DoughSizeTableSeeder::class,
             PizzaIngredientTableSeeder::class,
             OrderTableSeeder::class,
+            DeliveryAddressTableSeeder::class,
+            OrderDetailTableSeeder::class,
+            ToppingTableSeeder::class
         ]);
     }
 }

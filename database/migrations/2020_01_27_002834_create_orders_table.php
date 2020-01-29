@@ -15,8 +15,8 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->date('future_order_date');
-            $table->time('future_order_hour');
+            $table->date('future_order_date')->nullable();
+            $table->time('future_order_hour')->nullable();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('order_type_id');
             $table->unsignedBigInteger('payment_type_id');

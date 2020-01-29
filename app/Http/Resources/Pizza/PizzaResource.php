@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\Pizza;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use Carbon\Carbon;
 
-class UserResource extends JsonResource
+class PizzaResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -17,12 +16,13 @@ class UserResource extends JsonResource
     {
         return [
             'id' => (string) $this->id,
-            'type' => 'users',
+            'type' => 'pizzas',
             'attributes' => [
                 'name' => $this->name,
-                'email' => $this->email,
-                'created_at' => Carbon::parse($this->created_at)->format('d-m-Y')
-            ],
+                'description' => $this->description,
+                'price' => (string )$this->price,
+                'url_image' => $this->url_image
+            ]
         ];
     }
 }

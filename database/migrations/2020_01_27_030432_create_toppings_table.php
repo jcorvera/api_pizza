@@ -26,7 +26,7 @@ class CreateToppingsTable extends Migration
             ->onUpdate('cascade');
 
             $table->foreign('pizza_ingredient_id')
-            ->references('id')->on('dough_sizes')
+            ->references('id')->on('pizza_ingredients')
             ->onDelete('restrict')
             ->onUpdate('cascade');
         });

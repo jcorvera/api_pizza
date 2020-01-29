@@ -28,7 +28,7 @@ class StoreUserRequest extends FormRequest
             'data.type' => 'required|in:users',
             'data.attributes' => 'required|array',
             'data.attributes.name' => 'required|string|min:3',
-            'data.attributes.email' => 'required|email',
+            'data.attributes.email' => 'required|email|unique:users,email',
             'data.attributes.password' => 'required|string|min:8',
         ];
     }

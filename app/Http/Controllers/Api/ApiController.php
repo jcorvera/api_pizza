@@ -7,42 +7,47 @@ use JWTAuth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\login\StoreUserRequest;
-use App\Http\Requests\User\LoginRequest;
-use App\Http\Resources\UserResource;
+use App\Http\Resources\ProfileResource;
 use Illuminate\Support\Facades\DB;
 use App\User;
 
 class ApiController extends Controller
 {
-    public function login(LoginRequest $request)
+    public function authenticate(Request $request)
     {
-        $credentials = $request->only('email', 'password');
         $token = null;
+        $credentials = [
+            'email' => $request->input('data.attributes.email'),
+            'password' => $request->input('data.attributes.password')
+        ];
+
         if (! $token = JWTAuth::attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
         return $this->respondWithToken($token);
     }
-
+    
     public function profile()
     {
-        return response()->json(new UserResource(auth()->user()),200);
+        return response()->json(new ProfileResource(auth()->user()),200);
     }
 
     public function register(StoreUserRequest $request)
     {
         try {
             DB::beginTransaction();
-                User::create([
-                    'name' => $request->name,
-                    'email' => $request->email,
-                    'password' => bcrypt($request->password),
-                ]);
-            DB::commit()
-        }catch (\Throwable $e) {
+                $user = new User();
+                $user->name = $request->input('data.attributes.name');
+                $user->email = $request->input('data.attributes.email');
+                $user->password = bcrypt($request->input('data.attributes.password'));
+                $user->save();
+            DB::commit();
+            return $this->authenticate($request);
+        } catch (\Throwable $e) {
             DB::rollBack();
         }
     }
+
 
     public function logout(Request $request)
     {

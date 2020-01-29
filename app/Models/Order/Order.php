@@ -11,7 +11,7 @@ class Order extends Model
 
     protected $fillable = [
         'future_order_date',
-        'future_orde_hour',
+        'future_order_hour',
         'user_id',
         'order_type_id',
         'payment_type_id',

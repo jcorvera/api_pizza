@@ -3,9 +3,8 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Tymon\JWTAuth\JWTAuth;
 
-class JWT
+class JWT_admin
 {
     /**
      * Handle an incoming request.
@@ -16,7 +15,8 @@ class JWT
      */
     public function handle($request, Closure $next)
     {
-        JWTAuth::parseToken()->authenticate();
-        return $next($request);
+        if (auth()->user()->user_type === 1)
+            return $next($request);
+        return response()->json(['error' => 'Unauthorized'], 401);
     }
 }

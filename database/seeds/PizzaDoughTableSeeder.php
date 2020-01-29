@@ -13,6 +13,7 @@ class PizzaDoughTableSeeder extends Seeder
     public function run()
     {
        DB::table('pizza_doughs')->insert([
+           
             ['pizza_id' => 1,'dough_id' => 1],
             ['pizza_id' => 1,'dough_id' => 2],
             ['pizza_id' => 1,'dough_id' => 3],
