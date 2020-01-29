@@ -21,7 +21,7 @@ class CreateOrdersTable extends Migration
             $table->unsignedBigInteger('order_type_id');
             $table->unsignedBigInteger('payment_type_id');
             $table->unsignedBigInteger('branch_office_id');
-            $table->decimal('amount',8,2);
+            $table->decimal('amount',8,2)->default(0.00);
             $table->timestamps();
 
             $table->foreign('user_id')

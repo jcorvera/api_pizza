@@ -22,6 +22,7 @@ Route::get('v1/doughs/{id}/sizes','Api\Order\DoughSizeController@show');
 Route::group(['middleware' => 'auth_jwt','prefix' => 'v1'], function () {
     Route::post('logout', 'Api\ApiController@logout');
     Route::get('profile/basic-information', 'Api\ApiController@profile');
+    Route::post('order','Api\Order\OrderController@store');
 });
 
 Route::group([ 'middleware' => ['auth_jwt','auth_admin_jwt'],'prefix' => 'v1'], function (){
