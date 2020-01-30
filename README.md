@@ -33,14 +33,14 @@ Endpoints publicos
 - api/v1/pizzas/{id}/doughs <permite consultar los tipos de panes disponibles para la pizza>
 - api/v1/doughs/{id}/sizes <permite consultar los tipos de tamaño para la pizza [4 porciones, 8 porciones, pizza 4]>
 
-Endpoint privado para el cliente
+Endpoints privados para el cliente
 - api/v1/logout <permite cerrar sesión>
 - api/v1/profile/basic-information <permite consultar el perfil básico del cliente>
 - api/v1/order <permite confirmar la orden, agregar pizzas, ingredientes, tipos de pan y tamaño y de esta manera guardarla en la base de datos, retorna el encabezado y detalle de la orden>
 - api/v1/my-orders-history <permite consultar todas las ordenes realizadas por el usuario logueado>
 - api/v1/orders/{id}/details <permite consultar el detalle completo de una orden en especifico>
 
-Endpoint privado para el admin
+Endpoints privados para el admin
 - api/v1/most-frequent-customers <permite consultar los clientes mas frecuentes> 
 - api/v1/customers-that-spend-more-money <permite consultar los clientes que mas gastan>
 - api/v1/popular-ingredients <permite consultar los ingredientes más populares>
