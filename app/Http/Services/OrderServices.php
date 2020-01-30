@@ -7,10 +7,13 @@ use App\Models\Order\Order;
 use App\Models\Order\OrderDetail;
 use App\Models\Order\Topping;
 use App\Http\Resources\Order\InfoOrderResource;
+use App\Http\Resources\Order\OrderCollection;
 use Illuminate\Support\Facades\DB;
 
-class OrderStoreServices
+class OrderServices
 {
+    protected const YESNO = ["Yes","No"]; 
+
     public function storeOrder(Array $order )
     {
         $order = Order::create([
@@ -122,13 +125,100 @@ class OrderStoreServices
         return new InfoOrderResource($infoOrder);
     }
 
-
     public function relationships(int $order_id)
     {
         return [
             'delivery_address' => DeliveryAddress::where('order_id',$order_id)->get(['city', 'suburb', 'street_or_avenue', 'house_level_appartment_number', 'points_reference']),
-            'order_details' => OrderDetail::with('toppings')->where('order_id',$order_id)->get(),
+            'order_details' => $this->orderRelationships($order_id),
         ];
+    }
+
+    private function orderRelationships(int $order_id)
+    {
+        $collection = collect([]);
+
+        $orderDetail = $this->getOrderDetail($order_id);
+        
+        foreach ($orderDetail as $value) {
+
+            $collectDetail = $this->getToppingsCollect($value->order_detail_id);
+
+            $collection->push([
+                "pizza_name" =>  $value->pizza_name,
+                "description" => $value->description,
+                "url_image" => $value->url_image,
+                "price_pizza" => $value->price_pizza,
+                "dough_name" => $value->dough_name,
+                "size_pizza" => $value->size_pizza,
+                "dough_size_pizza_price" => $value->dough_size_pizza_price,
+                "price_for_extra_ingredients" => $collectDetail->get('price_ingredients'),
+                "total_cost_pizza" =>  number_format( ( $value->price_pizza +  $value->dough_size_pizza_price + $collectDetail->get('price_ingredients')),2 ),
+                "toppings" => $collectDetail->get('detail_ingredients'),
+            ]);
+        }   
+        
+        return $collection;
+    }
+
+    private function getOrderDetail(int $order_id){
+        return OrderDetail::join('pizzas as p','p.id','=','order_details.pizza_id')
+        ->join('dough_sizes as ds','ds.id','=','order_details.dough_size_id')
+        ->join('doughs as s','s.id','=','ds.dough_id')
+        ->join('size_pizzas as sp','sp.id','=','ds.size_pizza_id')
+        ->select(
+            'order_details.id  as order_detail_id',
+            'p.name as pizza_name','p.description as description',
+            'p.url_image as url_image','p.price as price_pizza',
+            's.name as dough_name','sp.name as size_pizza','ds.price as dough_size_pizza_price')->where('order_details.order_id',$order_id)
+        ->groupBy('order_details.id')
+        ->get();
+    }
+
+    private function getToppingsCollect(int $order_detail_id)
+    {
+        $collectDetail = collect([]);
+        $priceIngredientes = 0;
+
+        $toppings = Topping::join('pizza_ingredients as pi','pi.id','toppings.pizza_ingredient_id')
+        ->join('ingredients as i','i.id','=','pi.ingredient_id')
+        ->select( DB::raw('if(pi.extra = 0,"No","Yes") as extra'),'i.name as name','pi.price as price')
+        ->where('toppings.order_detail_id',$order_detail_id)
+        ->get();
+
+        foreach ($toppings as $index=> $val) {
+
+            if($val->extra === self::YESNO[0])
+            {
+                $priceIngredientes += $val->price ;
+
+                $collectDetail->push([
+                    "extra" => $val->extra,
+                    "name" => $val->name,
+                    "price" => $val->price
+                ]);
+
+            } else {
+
+                $collectDetail->push([
+                    "extra" => $val->extra,
+                    "name" => $val->name
+                ]);
+
+            }
+        }
+        return collect(['price_ingredients' => number_format($priceIngredientes,2) ,'detail_ingredients' => $collectDetail]);
+    }
+
+
+    public function allOrders(){
+        $orders = Order::join('order_types as ot','ot.id','=','orders.order_type_id')
+        ->join('payment_types as pt','pt.id','=','orders.payment_type_id')
+        ->join('branch_offices as bo','bo.id','=','orders.branch_office_id')
+        ->join('users as u','u.id','=','orders.user_id')
+        ->select('future_order_date','future_order_hour','u.email as user_email','ot.name as order_type','bo.name as branch_office','pt.name as payment_type','amount')
+        ->where('u.id',auth()->user()->id)
+        ->get();  
+        return new OrderCollection($orders); 
     }
 
 }

@@ -36,4 +36,5 @@ class OrderDetail extends Model
     {
         return $this->hasMany(Topping::class,'order_detail_id','id'); 
     }
+
 }
